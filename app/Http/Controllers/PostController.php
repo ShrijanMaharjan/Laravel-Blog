@@ -139,11 +139,12 @@ class PostController extends Controller
     {
         //
         $this->authorizeUser(Post::findOrFail($id));
-
-        Post::destroy($id);
+        $post = Post::findOrFail($id);
+        $post->delete();
         return redirect()->route('posts.index')
             ->with('success', 'Post deleted successfully.');
     }
+
     public function authorizeUser(Post $post)
     {
         if ($post->user_id !== Auth::id()) {

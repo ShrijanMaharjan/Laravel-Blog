@@ -87,7 +87,7 @@
                 </button>
             </div>
         </form>
-
+        <button class="mb-5 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md transition"><a href="{{route('posts.deleted')}}">Deleted Posts</a></button>
         {{-- Posts --}}
         <div class="grid gap-6 md:grid-cols-2">
             @forelse($posts as $post)
