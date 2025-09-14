@@ -25,4 +25,15 @@ class CommentController extends Controller
 
         return redirect()->route('posts.index')->with('success', 'Comment added successfully.');
     }
+    public function destroy(Comment $comment)
+    {
+
+        if ($comment->user_id !== Auth::id()) {
+            return redirect()->route('posts.index')->with('error', 'Unauthorized action.');
+        }
+
+        $comment->delete();
+
+        return redirect()->route('posts.index')->with('success', 'Comment deleted successfully.');
+    }
 }

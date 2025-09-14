@@ -23,11 +23,13 @@ Route::middleware('auth', 'admin')->group(function () {
 
 Route::resource('posts', PostController::class)->middleware('auth');
 Route::post('/posts/{id}/like', [PostController::class, 'postlike'])->middleware('auth')->name('posts.postlike');
+Route::get('/deleted-posts', [PostController::class, 'showDeletedPosts'])->middleware('auth')->name('posts.deleted');
+Route::post('/posts/{id}/restore', [PostController::class, 'restore'])->middleware('auth')->name('posts.restore');
 
 Route::post('/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
+Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->middleware('auth')->name('comments.destroy');
 
-Route::get('/deleted-posts', [SoftDeleteController::class, 'showDeletedPosts'])->middleware('auth')->name('posts.deleted');
-Route::post('/posts/{id}/restore', [SoftDeleteController::class, 'restore'])->middleware('auth')->name('posts.restore');
+
 
 Route::get('/dashboard', [DashboardController::class, 'dashboard'])->middleware('auth', 'admin')->name('dashboard');
 

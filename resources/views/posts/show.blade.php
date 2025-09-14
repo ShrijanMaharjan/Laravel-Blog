@@ -57,19 +57,38 @@
     </div>
 
     {{-- Comments List --}}
-    <div class="space-y-4 mb-8">
-        <h2 class="text-lg font-semibold text-gray-800 mb-3">Comments ({{ $post->comments->count() }})</h2>
-        @forelse($post->comments as $comment)
-            <div class="bg-white shadow-sm rounded-lg p-4">
-                <p class="text-gray-700 mb-2">{{ $comment->content }}</p>
-                <p class="text-gray-500 text-xs">
-                    By <span class="font-medium">{{ $comment->user->name }}</span> • {{ $comment->created_at->diffForHumans() }}
-                </p>
+   <div class="space-y-6 mb-8">
+    <h2 class="text-xl font-semibold text-gray-800 mb-4">
+        Comments <span class="text-gray-500">({{ $post->comments->count() }})</span>
+    </h2>
+
+    @forelse($post->comments as $comment)
+        <div class="bg-gray-50 shadow-sm rounded-lg p-4 hover:bg-gray-100 transition">
+            <div class="flex justify-between items-start">
+                <div>
+                    <p class="text-gray-700 mb-2">{{ $comment->content }}</p>
+                    <p class="text-gray-500 text-sm">
+                        By <span class="font-medium">{{ $comment->user->name }}</span> • 
+                        {{ $comment->created_at->diffForHumans() }}
+                    </p>
+                </div>
+
+                @if ($comment->user_id === auth()->id())
+                    <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" class="ml-4 flex-shrink-0">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg shadow-md transition">
+                            Delete
+                        </button>
+                    </form>
+                @endif
             </div>
-        @empty
-            <p class="text-gray-500 italic">No comments yet. Be the first to comment!</p>
-        @endforelse
-    </div>
+        </div>
+    @empty
+        <p class="text-gray-500 italic">No comments yet. Be the first to comment!</p>
+    @endforelse
+</div>
+
 
     {{-- Back Button --}}
     <div class="text-right">

@@ -158,6 +158,20 @@ class PostController extends Controller
         return redirect()->route('posts.index')
             ->with('success', 'Post deleted successfully.');
     }
+    public function showDeletedPosts()
+    {
+        $deletedPosts = Post::onlyTrashed()->where('user_id', Auth::id())->get();
+        return view('posts.deleted', compact('deletedPosts'));
+    }
+
+    public function restore($id)
+    {
+        $post = Post::withTrashed()->findOrFail($id);
+        $this->authorizeUser($post);
+        $post->restore();
+        return redirect()->route('posts.index')
+            ->with('success', 'Post restored successfully.');
+    }
 
     public function authorizeUser(Post $post)
     {
