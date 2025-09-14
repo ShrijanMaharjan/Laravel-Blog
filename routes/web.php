@@ -22,6 +22,7 @@ Route::middleware('auth', 'admin')->group(function () {
 });
 
 Route::resource('posts', PostController::class)->middleware('auth');
+Route::post('/posts/{id}/like', [PostController::class, 'postlike'])->middleware('auth')->name('posts.postlike');
 
 Route::post('/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
 

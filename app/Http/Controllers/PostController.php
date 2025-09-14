@@ -92,6 +92,20 @@ class PostController extends Controller
         $post = Post::with(['user', 'comments.user', 'categories'])->findOrFail($id);
         return view('posts.show', compact('post'));
     }
+    public function postlike(string $id)
+    {
+        //
+        $post = Post::findOrFail($id);
+        if ($post->user_id == Auth::id()) {
+            return redirect()->route('posts.index')
+                ->with('error', 'You cannot like your own post.');
+        } else {
+            $post->likes = $post->likes + 1;
+            $post->save();
+            return redirect()->route('posts.index')
+                ->with('success', 'Post liked successfully.');
+        }
+    }
 
     /**
      * Show the form for editing the specified resource.

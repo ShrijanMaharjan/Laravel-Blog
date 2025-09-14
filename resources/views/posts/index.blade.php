@@ -26,6 +26,23 @@
             </div>
         </div>
     @endif
+    @if (session('error'))
+        <div class="max-w-3xl mx-auto mt-6">
+            <div class="flex items-center justify-between bg-red-100 border border-red-400 text-red-800 px-4 py-3 rounded-lg shadow-sm">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span class="font-medium">{{ session('error') }}</span>
+                </div>
+                <button type="button" class="text-red-600 hover:text-red-800" onclick="this.closest('div').remove()">
+                    ✕
+                </button>
+            </div>
+        </div>
+    @endif
 
     <div class="container mx-auto p-6">
 
@@ -103,7 +120,7 @@
                     </div>
 
                     <div class="text-sm text-gray-500 mb-2">
-                        💬 {{ $post->comments_count }} • 👁️ {{ $post->views }}
+                        💬 {{ $post->comments_count }} • 👁️ {{ $post->views }} • 👍 {{$post->likes}}
                     </div>
 
                     <div class="flex flex-wrap gap-2 mb-3">
@@ -117,6 +134,10 @@
                     <div class="flex gap-4 mt-4">
                         <a href="{{ route('posts.edit', $post) }}" class="text-blue-600 hover:underline">✏️ Edit</a>
                         <a href="{{ route('posts.show', $post) }}" class="text-green-600 hover:underline">👁️ View</a>
+                            <form action="{{ route('posts.postlike', $post->id) }}" method="POST" class="inline">
+                                @csrf
+                                <button type="submit" class="text-yellow-600 hover:underline">👍 Like</button>
+                            </form>
                         <form action="{{ route('posts.destroy', $post) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
