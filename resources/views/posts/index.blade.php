@@ -120,7 +120,7 @@
                     </div>
 
                     <div class="text-sm text-gray-500 mb-2">
-                        💬 {{ $post->comments_count }} • 👁️ {{ $post->views }} • 👍 {{$post->likes}}
+                        💬 {{ $post->comments_count }} • 👁️ {{ $post->views }} • ❤️ {{$post->likes}}
                     </div>
 
                     <div class="flex flex-wrap gap-2 mb-3">
@@ -136,7 +136,7 @@
                         <a href="{{ route('posts.show', $post) }}" class="text-green-600 hover:underline">👁️ View</a>
                             <form action="{{ route('posts.postlike', $post->id) }}" method="POST" class="inline">
                                 @csrf
-                                <button type="submit" class="text-yellow-600 hover:underline">👍 Like</button>
+                                <button type="submit" class="text-yellow-600 hover:underline">❤️ Like</button>
                             </form>
                         <form action="{{ route('posts.destroy', $post) }}" method="POST" class="inline">
                             @csrf

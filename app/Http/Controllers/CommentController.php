@@ -23,7 +23,8 @@ class CommentController extends Controller
             'content' => $request->content,
         ]);
 
-        return redirect()->route('posts.index')->with('success', 'Comment added successfully.');
+
+        return redirect()->route('posts.show', $request->post_id)->with('success', 'Comment added successfully.');
     }
     public function destroy(Comment $comment)
     {
@@ -31,9 +32,10 @@ class CommentController extends Controller
         if ($comment->user_id !== Auth::id()) {
             return redirect()->route('posts.index')->with('error', 'Unauthorized action.');
         }
+        $postId = $comment->post_id;
 
         $comment->delete();
 
-        return redirect()->route('posts.index')->with('success', 'Comment deleted successfully.');
+        return redirect()->route('posts.show', $postId)->with('success', 'Comment deleted successfully.');
     }
 }

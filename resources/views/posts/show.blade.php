@@ -7,8 +7,26 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    
 
 <div class="w-full max-w-3xl mx-auto p-6">
+    @if (session('success'))
+        <div class="max-w-3xl mx-auto mt-6 mb-4">
+            <div class="flex items-center justify-between bg-green-100 border border-green-400 text-green-800 px-4 py-3 rounded-lg shadow-sm">
+                <div class="flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" 
+                              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span class="font-medium">{{ session('success') }}</span>
+                </div>
+                <button type="button" class="text-green-600 hover:text-green-800" onclick="this.closest('div').remove()">
+                    ✕
+                </button>
+            </div>
+        </div>
+    @endif
     
     {{-- Post Details --}}
     <div class="bg-white p-8 rounded-xl shadow-lg mb-8">
@@ -62,7 +80,7 @@
         Comments <span class="text-gray-500">({{ $post->comments->count() }})</span>
     </h2>
 
-    @forelse($post->comments as $comment)
+    @forelse($latestComments as $comment)
         <div class="bg-gray-50 shadow-sm rounded-lg p-4 hover:bg-gray-100 transition">
             <div class="flex justify-between items-start">
                 <div>

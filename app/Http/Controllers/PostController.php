@@ -90,7 +90,8 @@ class PostController extends Controller
         $post->save();
 
         $post = Post::with(['user', 'comments.user', 'categories'])->findOrFail($id);
-        return view('posts.show', compact('post'));
+        $latestComments = $post->comments()->latest()->take(5)->get();
+        return view('posts.show', compact('post', 'latestComments'));
     }
     public function postlike(string $id)
     {
