@@ -172,6 +172,14 @@ class PostController extends Controller
         return redirect()->route('posts.index')
             ->with('success', 'Post restored successfully.');
     }
+    public function forceDelete($id)
+    {
+        $post = Post::withTrashed()->findOrFail($id);
+        $this->authorizeUser($post);
+        $post->forceDelete();
+        return redirect()->route('posts.index')
+            ->with('success', 'Post permanently deleted successfully.');
+    }
 
     public function authorizeUser(Post $post)
     {

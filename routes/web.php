@@ -25,6 +25,7 @@ Route::resource('posts', PostController::class)->middleware('auth');
 Route::post('/posts/{id}/like', [PostController::class, 'postlike'])->middleware('auth')->name('posts.postlike');
 Route::get('/deleted-posts', [PostController::class, 'showDeletedPosts'])->middleware('auth')->name('posts.deleted');
 Route::post('/posts/{id}/restore', [PostController::class, 'restore'])->middleware('auth')->name('posts.restore');
+Route::delete('/posts/{id}/force-delete', [PostController::class, 'forceDelete'])->middleware('auth')->name('posts.forceDelete');
 
 Route::post('/comments', [CommentController::class, 'store'])->middleware('auth')->name('comments.store');
 Route::delete('/comments/{comment}', [CommentController::class, 'destroy'])->middleware('auth')->name('comments.destroy');

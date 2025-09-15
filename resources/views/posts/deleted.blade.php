@@ -23,6 +23,14 @@
                         Restore
                     </button>
                 </form>
+                <form action="{{ route('posts.forceDelete', $deletedPost->id) }}" method="POST" class="inline">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" 
+                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
+                        Delete Permanently
+                    </button>
+                </form>
             </div>
         @empty
             <p class="text-gray-500 italic">No deleted posts!</p>
