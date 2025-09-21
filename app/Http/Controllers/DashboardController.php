@@ -11,6 +11,18 @@ class DashboardController extends Controller
 
     public function dashboard(Request $request)
     {
+
+        $allowed = ['sort_by'];
+        foreach ($request->query() as $key => $value) {
+            if (!in_array($key, $allowed)) {
+                abort(404);
+            }
+        }
+
+        $validSort = ['7_days', '1_month'];
+        if ($request->filled('sort_by') && !in_array($request->sort_by, $validSort)) {
+            abort(404, 'Invalid sort_by value');
+        }
         $query = Post::query();
 
         if ($request->filled('sort_by')) {

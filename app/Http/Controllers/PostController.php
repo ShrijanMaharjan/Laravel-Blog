@@ -13,31 +13,52 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
+
     public function index(Request $request)
     {
+        // Allowed query parameters
+        $allowed = ['search', 'category_id', 'comments_count', 'sort_by', 'page'];
+        // If any unexpected parameter exists → throw 404
+        foreach ($request->query() as $key => $value) {
+            if (!in_array($key, $allowed)) {
+                abort(404);
+            }
+        }
+
+        $validated = $request->validate([
+            'search'         => 'nullable|string|max:255',
+            'category_id'    => 'nullable|exists:categories,id',
+            'comments_count' => 'nullable|in:asc,desc',
+            'sort_by'        => 'nullable|in:asc,desc',
+        ]);
 
         $query = Post::with(['user', 'categories'])->withCount('comments');
-        if ($search = $request->input('search')) {
-            $query->where('title', 'like', "%{$search}%");
+
+        if (!empty($validated['search'])) {
+            $query->where('title', 'like', "%{$validated['search']}%");
         }
-        if ($request->filled('category_id')) {
-            $query->whereHas('categories', function ($q) use ($request) {
-                $q->where('categories.id', $request->category_id);
+
+        if (!empty($validated['category_id'])) {
+            $query->whereHas('categories', function ($q) use ($validated) {
+                $q->where('categories.id', $validated['category_id']);
             });
         }
-        if ($request->filled('comments_count')) {
-            $query->orderBy('comments_count', $request->comments_count);
+
+        if (!empty($validated['comments_count'])) {
+            $query->orderBy('comments_count', $validated['comments_count']);
         }
-        if ($request->filled('sort_by')) {
-            $query->orderBy('created_at', $request->sort_by);
+
+        if (!empty($validated['sort_by'])) {
+            $query->orderBy('created_at', $validated['sort_by']);
         }
 
         $posts = $query->orderBy('created_at', 'desc')->paginate(10);
         $categories = Category::all();
-        return view('posts.index', compact('posts', 'categories'));
-        //
 
+        return view('posts.index', compact('posts', 'categories'));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
