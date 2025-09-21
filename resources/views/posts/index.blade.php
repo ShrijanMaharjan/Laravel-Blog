@@ -105,6 +105,10 @@
             </div>
         </form>
         <button class="mb-5 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-md transition"><a href="{{route('posts.deleted')}}">Deleted Posts</a></button>
+
+        
+        <button class="ml-5 mb-5 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow-md transition"><a href="{{route('posts.pending')}}">Pending Posts</a></button>
+        
         {{-- Posts --}}
         <div class="grid gap-6 md:grid-cols-2">
             @forelse($posts as $post)
@@ -141,7 +145,7 @@
                         <form action="{{ route('posts.destroy', $post) }}" method="POST" class="inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="text-red-600 hover:underline">🗑 Delete</button>
+                            <button type="submit" class="text-red-600 hover:underline" onclick="confirm('Are you sure?')">🗑 Delete</button>
                         </form>
                     </div>
                 </div>

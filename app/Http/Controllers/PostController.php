@@ -32,7 +32,7 @@ class PostController extends Controller
             'sort_by'        => 'nullable|in:asc,desc',
         ]);
 
-        $query = Post::with(['user', 'categories'])->withCount('comments');
+        $query = Post::where('status', 'published')->with(['user', 'categories'])->withCount('comments');
 
         if (!empty($validated['search'])) {
             $query->where('title', 'like', "%{$validated['search']}%");
@@ -56,6 +56,14 @@ class PostController extends Controller
         $categories = Category::all();
 
         return view('posts.index', compact('posts', 'categories'));
+    }
+    public function pendingIndex()
+    {
+        $id = Auth::id();
+        $posts = Post::where('status', 'pending')->where('user_id', $id)->with(['user', 'categories'])->withCount('comments')->orderBy('created_at', 'desc')->paginate(10);
+        $categories = Category::all();
+
+        return view('posts.pending', compact('posts', 'categories'));
     }
 
 

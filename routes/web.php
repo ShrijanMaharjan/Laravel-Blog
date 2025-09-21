@@ -22,6 +22,7 @@ Route::middleware('auth', 'admin')->group(function () {
 });
 
 Route::resource('posts', PostController::class)->middleware('auth');
+Route::get('/pending-posts', [PostController::class, 'pendingIndex'])->middleware('auth')->name('posts.pending');
 Route::post('/posts/{id}/like', [PostController::class, 'postlike'])->middleware('auth')->name('posts.postlike');
 Route::get('/deleted-posts', [PostController::class, 'showDeletedPosts'])->middleware('auth')->name('posts.deleted');
 Route::post('/posts/{id}/restore', [PostController::class, 'restore'])->middleware('auth')->name('posts.restore');

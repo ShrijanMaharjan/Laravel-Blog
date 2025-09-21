@@ -50,7 +50,7 @@
                            focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                 <option value="published" {{ old('status')=='published' ? 'selected' : '' }}>Published</option>
                 <option value="pending" {{ old('status')=='pending' ? 'selected' : '' }}>Pending</option>
-                <option value="draft" {{ old('status')=='draft' ? 'selected' : '' }}>Draft</option>
+                
             </select>
         </div>
 
